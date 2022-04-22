@@ -2,7 +2,7 @@ module Main where
 
 import qualified System.Random as SR
 
-data Player = Player Name Guesses
+data Player = Player Name [Guess]
   deriving (Show)
 
 data Outcome = None | Tie [Player] | Winner Player
@@ -10,13 +10,16 @@ data Outcome = None | Tie [Player] | Winner Player
 
 type Name = String
 
-type Guesses = [Int]
+type Guess = Int
 
 type GameState = [Player]
 
+getRandomGuess :: IO Guess
+getRandomGuess = SR.randomRIO (0 :: Int, 10)
+
 guessNumber :: Player -> IO Player
 guessNumber p@(Player name guesses) = do
-  n <- SR.randomRIO (0 :: Int, 10)
+  n <- getRandomGuess
   if n `elem` guesses
     then guessNumber p
     else return $ Player name $ guesses ++ [n]
@@ -25,7 +28,7 @@ printLastGuess :: Player -> IO Player
 printLastGuess p@(Player name guesses) =
   putStrLn (name ++ " has guessed " ++ show (last guesses)) >> return p
 
-getOutcome :: Int -> GameState -> Outcome
+getOutcome :: Guess -> GameState -> Outcome
 getOutcome n state =
   let outcome = filter (\(Player _ guesses) -> n `elem` guesses) state
    in case length outcome of
@@ -33,7 +36,7 @@ getOutcome n state =
         1 -> Winner $ head outcome
         _ -> Tie outcome
 
-play :: Int -> GameState -> IO ()
+play :: Guess -> GameState -> IO ()
 play n state = do
   state' <- traverse guessNumber state
   traverse printLastGuess state'
@@ -49,6 +52,6 @@ play n state = do
 main :: IO ()
 main = do
   let initialState = [Player "Decio" [], Player "Sara" []]
-  houseGuess <- SR.randomRIO (0 :: Int, 10)
+  houseGuess <- getRandomGuess
   putStrLn $ "House guess: " ++ show houseGuess
   play houseGuess initialState
