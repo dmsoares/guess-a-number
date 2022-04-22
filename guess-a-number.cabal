@@ -1,0 +1,21 @@
+name:                guess-a-number
+version:             0.1.0.0
+-- synopsis:
+description:         A naive attempt at creating a "Guess a number!" game simulator.
+homepage:            https://github.com/githubuser/guess-a-number#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Decio Soares
+maintainer:          decio.msoares@gmail.cm
+copyright:           2022 Decio Soares
+category:            CLI
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+executable guess-a-number
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5
+                     , random
