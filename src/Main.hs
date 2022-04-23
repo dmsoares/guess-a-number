@@ -21,9 +21,7 @@ getRandomGuess = SR.randomRIO (0 :: Int, 10)
 guessNumber :: Player -> IO Player
 guessNumber p@(Player name guesses) = do
   n <- getRandomGuess
-  if n `elem` guesses
-    then guessNumber p
-    else return $ Player name $ guesses ++ [n]
+  return $ Player name $ guesses ++ [n]
 
 printLastGuess :: Player -> IO Player
 printLastGuess p@(Player name guesses) =
