@@ -29,6 +29,9 @@ printLastGuess :: Player -> IO Player
 printLastGuess p@(Player name guesses) =
   putStrLn (name ++ " has guessed " ++ show (last guesses)) >> return p
 
+printSeparator :: IO ()
+printSeparator = putStrLn $ replicate 12 '-'
+
 getOutcome :: GameState -> Outcome
 getOutcome (Game guess players) =
   let outcome = filter (\(Player _ guesses) -> guess `elem` guesses) players
@@ -44,14 +47,18 @@ play (Game guess players) = do
   let newState = Game guess players'
   case getOutcome newState of
     Winner (Player name guesses) ->
-      putStrLn $ name ++ " has won with " ++ show (length guesses) ++ " guesses!!"
+      do
+        printSeparator
+        putStrLn $ name ++ " has won with " ++ show (length guesses) ++ " guesses!!"
     Tie (Player _ guesses : players) ->
-      putStrLn $ "We have a tie after " ++ show (length guesses) ++ " guesses!!"
+      do
+        printSeparator
+        putStrLn $ "We have a tie after " ++ show (length guesses) ++ " guesses!!"
     _ -> play newState
-  return ()
 
 main :: IO ()
 main = do
   houseGuess <- getRandomGuess
-  putStrLn $ "House guess: " ++ show houseGuess
+  putStrLn $ "House picks " ++ show houseGuess
+  printSeparator
   play $ Game houseGuess [Player "Decio" [], Player "Sara" []]
