@@ -23,9 +23,9 @@ guessNumber p@(Player name guesses) = do
   n <- getRandomGuess
   return $ Player name $ guesses ++ [n]
 
-printLastGuess :: Player -> IO Player
+printLastGuess :: Player -> IO ()
 printLastGuess p@(Player name guesses) =
-  putStrLn (name ++ " has guessed " ++ show (last guesses)) >> return p
+  putStrLn (name ++ " has guessed " ++ show (last guesses))
 
 printSeparator :: IO ()
 printSeparator = putStrLn $ replicate 12 '-'
