@@ -1,5 +1,6 @@
 module Main where
 
+import Data.Maybe
 import qualified System.Random as SR
 
 data Player = Player Name [Guess]
@@ -14,6 +15,14 @@ data Outcome = None | Tie [Player] | Winner Player
 type Name = String
 
 type Guess = Int
+
+mkPlayer :: String -> Maybe Player
+mkPlayer name
+  | null name = Nothing
+  | otherwise = Just $ Player name []
+
+mkPlayers :: [String] -> [Player]
+mkPlayers = mapMaybe mkPlayer
 
 getRandomGuess :: IO Guess
 getRandomGuess = SR.randomRIO (0 :: Int, 10)
@@ -59,4 +68,4 @@ main = do
   houseGuess <- getRandomGuess
   putStrLn $ "House picks " ++ show houseGuess
   printSeparator
-  play $ Game houseGuess [Player "Decio" [], Player "Sara" []]
+  play $ Game houseGuess $ mkPlayers ["Decio", "Sara", "", "Ana"]
