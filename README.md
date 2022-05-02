@@ -15,7 +15,7 @@ Just clone this repo and run `stack build` in its root directory.
 
 ### Running
 
-To see the magic happen, you can use Stack as well and do `stack exec guess-a-number` or run the executable directly.
+To see it in action, you can use Stack as well and do `stack exec guess-a-number` or run the executable directly.
 
 ## What if it doesn't work?
 
