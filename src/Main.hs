@@ -68,4 +68,4 @@ main = do
   houseGuess <- getRandomGuess
   putStrLn $ "House picks " ++ show houseGuess
   printSeparator
-  play $ Game houseGuess $ mkPlayers ["Decio", "Sara", "", "Ana"]
+  play $ Game houseGuess $ mkPlayers ["Ada", "Grace", "", "Margaret"]
