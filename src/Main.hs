@@ -1,5 +1,6 @@
 module Main where
 
+import Control.Monad
 import Data.Maybe
 import qualified System.Random as SR
 
@@ -32,9 +33,9 @@ guessNumber p@(Player name guesses) = do
   n <- getRandomGuess
   return $ Player name $ guesses ++ [n]
 
-printLastGuess :: Player -> IO ()
+printLastGuess :: Player -> IO Player
 printLastGuess p@(Player name guesses) =
-  putStrLn (name ++ " has guessed " ++ show (last guesses))
+  putStrLn (name ++ " has guessed " ++ show (last guesses)) >> return p
 
 printSeparator :: IO ()
 printSeparator = putStrLn $ replicate 12 '-'
@@ -49,9 +50,10 @@ getOutcome (Game guess players) =
 
 play :: GameState -> IO ()
 play (Game guess players) = do
-  players' <- traverse guessNumber players
-  traverse printLastGuess players'
+  players' <- traverse (printLastGuess <=< guessNumber) players
+
   let newState = Game guess players'
+
   case getOutcome newState of
     Winner (Player name guesses) ->
       do
