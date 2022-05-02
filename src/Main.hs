@@ -57,7 +57,7 @@ play (Game guess players) = do
       do
         printSeparator
         putStrLn $ name ++ " has won with " ++ show (length guesses) ++ " guesses!!"
-    Tie (Player _ guesses : players) ->
+    Tie (Player _ guesses : _) ->
       do
         printSeparator
         putStrLn $ "We have a tie after " ++ show (length guesses) ++ " guesses!!"
