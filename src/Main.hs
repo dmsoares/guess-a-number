@@ -1,9 +1,10 @@
 module Main where
 
 import Control.Monad.Trans.State.Lazy (runStateT)
-import Domain
-import Game
+import Domain (mkPlayers)
+import Game ()
 import qualified GameWithStateT as GS
+import Utils (getRandomGuess, printSeparator)
 
 main :: IO ()
 main = do
@@ -16,6 +17,6 @@ main = do
 -- main :: IO ()
 -- main = do
 --   houseGuess <- getRandomGuess
---   putStrLn $ "House picks " ++ show houseGuess
+--   putStrLn $ "\nHouse picks " ++ show houseGuess
 --   printSeparator
 --   play $ Game houseGuess $ mkPlayers ["Ada", "Grace", "", "Margaret"]

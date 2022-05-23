@@ -1,25 +1,8 @@
-module Game (play, printSeparator, getRandomGuess) where
+module Game (play) where
 
 import Control.Monad ((<=<))
-import Control.Monad.Trans.State
-import Data.Maybe (mapMaybe)
-import Domain
-import qualified System.Random as SR
-
-getRandomGuess :: IO Guess
-getRandomGuess = SR.randomRIO (0 :: Int, 10)
-
-guessNumber :: Player -> IO Player
-guessNumber (Player name guesses) = do
-  n <- getRandomGuess
-  return $ Player name $ guesses ++ [n]
-
-printLastGuess :: Player -> IO Player
-printLastGuess p@(Player name guesses) =
-  putStrLn (name ++ " has guessed " ++ show (last guesses)) >> return p
-
-printSeparator :: IO ()
-printSeparator = putStrLn $ replicate 12 '-'
+import Domain (Game (..), Outcome (..), Player (Player))
+import Utils (guessNumber, printLastGuess, printSeparator)
 
 getOutcome :: Game -> Outcome
 getOutcome (Game guess players) =

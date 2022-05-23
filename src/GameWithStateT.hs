@@ -2,26 +2,10 @@ module GameWithStateT (play) where
 
 import Control.Monad ((<=<))
 import Control.Monad.IO.Class (liftIO)
-import Control.Monad.Trans.State
+import Control.Monad.Trans.State (StateT, get, put)
 import Data.Foldable (traverse_)
-import Data.Maybe (mapMaybe)
-import Domain
-import qualified System.Random as SR
-
-getRandomGuess :: IO Guess
-getRandomGuess = SR.randomRIO (0 :: Int, 10)
-
-guessNumber :: Player -> IO Player
-guessNumber (Player name guesses) = do
-  n <- getRandomGuess
-  return $ Player name $ guesses ++ [n]
-
-printLastGuess :: Player -> IO Player
-printLastGuess p@(Player name guesses) =
-  putStrLn (name ++ " has guessed " ++ show (last guesses)) >> return p
-
-printSeparator :: IO ()
-printSeparator = putStrLn $ replicate 12 '-'
+import Domain (Guess, Outcome (..), Player (..))
+import Utils (guessNumber, printLastGuess, printSeparator)
 
 getOutcome :: Guess -> [Player] -> Outcome
 getOutcome houseGuess players =
@@ -59,11 +43,3 @@ play houseGuess = do
           ]
         return outcome
     _ -> play houseGuess
-
-game :: IO ()
-game = do
-  houseGuess <- getRandomGuess
-  putStrLn $ "House picks " ++ show houseGuess
-  printSeparator
-  runStateT (play houseGuess) (mkPlayers ["Ada", "Grace", "", "Margaret"])
-  return ()
